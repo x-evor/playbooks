@@ -74,25 +74,23 @@
 
 - name: Check xworkmate-bridge public domain root
   ansible.builtin.uri:
-    url: "http://127.0.0.1/"
+    url: "{{ xworkmate_bridge_service_public_base_url }}/"
     method: GET
-    headers:
-      Host: "{{ xworkmate_bridge_service_domain }}"
-    follow_redirects: none
-    status_code: [200, 301, 302, 307, 308]
+    follow_redirects: safe
+    status_code: [200]
+    validate_certs: true
   changed_when: false
   register: xworkmate_bridge_service_root
 
 - name: Check xworkmate-bridge public domain ping
   ansible.builtin.uri:
-    url: "https://127.0.0.1/api/ping"
+    url: "{{ xworkmate_bridge_service_public_base_url }}/api/ping"
     method: GET
     headers:
-      Host: "{{ xworkmate_bridge_service_domain }}"
       Authorization: "Bearer {{ xworkmate_bridge_auth_token }}"
-    follow_redirects: none
+    follow_redirects: safe
     status_code: [200]
-    validate_certs: false
+    validate_certs: true
     return_content: true
   changed_when: false
   register: xworkmate_bridge_service_ping
