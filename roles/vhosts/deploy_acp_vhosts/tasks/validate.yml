@@ -85,12 +85,14 @@
 
 - name: Check xworkmate-bridge public domain ping
   ansible.builtin.uri:
-    url: "http://127.0.0.1/api/ping"
+    url: "https://127.0.0.1/api/ping"
     method: GET
     headers:
       Host: "{{ xworkmate_bridge_service_domain }}"
+      Authorization: "Bearer {{ xworkmate_bridge_auth_token }}"
     follow_redirects: none
     status_code: [200]
+    validate_certs: false
     return_content: true
   changed_when: false
   register: xworkmate_bridge_service_ping
